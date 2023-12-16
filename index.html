@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Video Player</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #player {
+            width: 640px;
+            height: 360px;
+        }
+    </style>
+</head>
+<body>
+    <div id="player"></div>
+
+    <script>
+        // Replace 'YOUR_API_KEY' with your YouTube API key
+        const apiKey = 'AIzaSyANVl47tWMXf6vLjDxP97CnjjibPfcJjCY';
+
+        // Replace 'VIDEO_ID' with your unlisted YouTube video ID
+        const videoId = '6U5FftVViJs';
+
+        // Load YouTube API script asynchronously
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        let player;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '360',
+                width: '640',
+                videoId: videoId,
+                playerVars: {
+                    'autoplay': 1,
+                    'controls': 1,
+                    'showinfo': 0,
+                    'rel': 0,
+                    'modestbranding': 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            // You can perform actions when the player is ready
+            console.log('Player is ready');
+        }
+
+        function onPlayerStateChange(event) {
+            // You can handle player state changes here
+            // For example, track video completion, pause, etc.
+            if (event.data === YT.PlayerState.ENDED) {
+                console.log('Video has ended');
+            }
+        }
+
+        // Function to load YouTube API script
+        function loadYouTubeAPI() {
+            const script = document.createElement('script');
+            script.src = 'https://www.youtube.com/iframe_api';
+            document.head.appendChild(script);
+        }
+
+        // Function to initialize the player when the API is ready
+        function init() {
+            if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
+                loadYouTubeAPI();
+            } else {
+                onYouTubeIframeAPIReady();
+            }
+        }
+
+        // Initialize the player
+        init();
+    </script>
+</body>
+</html>
